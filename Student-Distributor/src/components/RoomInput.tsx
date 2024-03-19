@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Room } from "../types";
+import { ExamsAtSameTime, Room } from "../types";
 import nextId from "react-id-generator";
 
 interface RoomInputProps {
@@ -39,37 +39,31 @@ const RoomInput: React.FC<RoomInputProps> = ({
           console.log(roomExists);
           if (roomExists) {
             // If a room with the same roomName exists, update it
-            const courseExistInRoom = prev.some((room) =>
-              room.courses?.some((course) => course.courseName === courseName)
+            const courseExistInRoom = prev.some(
+              (room) =>
+                room.roomName === inputValue &&
+                room.exams?.some((exam) =>
+                  exam.courseNames.some((course) => course === courseName)
+                )
             );
             if (courseExistInRoom) {
               setError("Course already exists in this room");
               return prev;
+            } else {
+              return addCourseToRoom(prev, inputValue, courseName, date);
             }
-
-            return prev.map((room) => {
-              if (room.roomName === inputValue) {
-                return {
-                  ...room,
-                  courses: [
-                    ...(room.courses || []),
-                    { courseName: courseName, date: date },
-                  ],
-                } as Room;
-              } else {
-                return room as Room;
-              }
-            }) as Room[];
           } else {
-            console.log(courseName);
-            // If no room with the same roomName exists, add a new room
             return [
               ...prev,
               {
                 id: nextId("room-"),
                 roomName: inputValue,
-                courses: [{ courseName: courseName, date: date }],
-              } as Room,
+                rows: null,
+                columns: null,
+                exams: [
+                  { courseNames: [courseName], date },
+                ] as ExamsAtSameTime[],
+              },
             ] as Room[];
           }
         });
@@ -101,5 +95,42 @@ const RoomInput: React.FC<RoomInputProps> = ({
     </div>
   );
 };
+function addCourseToRoom(
+  prev: Room[],
+  inputValue: string,
+  courseName: string,
+  date: string
+): Room[] {
+  return prev.map((room: Room) => {
+    if (room.roomName === inputValue) {
+      const dateExist = room.exams?.some((exam) => exam.date === date);
+      if (dateExist) {
+        return {
+          ...room,
+          exams: room.exams.map((exam) => {
+            if (exam.date === date) {
+              return {
+                ...exam,
+                courseNames: [...exam.courseNames, courseName],
+              };
+            } else {
+              return exam;
+            }
+          }),
+        } as Room;
+      } else {
+        return {
+          ...room,
+          exams: [
+            ...room.exams,
+            { courseNames: [courseName], date },
+          ] as ExamsAtSameTime[],
+        };
+      }
+    } else {
+      return room as Room;
+    }
+  }) as Room[];
+}
 
 export default RoomInput;

@@ -43,9 +43,9 @@ function Course({
           {rooms.map(
             (room, index) =>
               //check if the room has the courseName in it's array if yes render the div
-              room.courses?.some((item) => item.courseName === courseName) && (
-                <RoomCard key={index} roomName={room.roomName} />
-              )
+              room?.exams?.some((exam) =>
+                exam.courseNames.some((course) => course === courseName)
+              ) && <RoomCard key={index} roomName={room.roomName} />
           )}
         </div>
       </div>

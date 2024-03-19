@@ -10,8 +10,18 @@ interface RoomProps {
   rows: number;
   columns: number;
   editRoom: Dispatch<SetStateAction<Room[]>>;
+  children?: React.ReactNode;
+  hideModel?: () => void;
 }
-function RoomRow({ roomName, courseName, rows, columns, editRoom }: RoomProps) {
+function RoomRow({
+  roomName,
+  courseName,
+  rows,
+  columns,
+  editRoom,
+  children,
+  hideModel,
+}: RoomProps) {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [newRows, setNewRows] = useState<number | null>(rows);
   const [newColumns, setNewColumns] = useState<number | null>(columns);
@@ -53,50 +63,56 @@ function RoomRow({ roomName, courseName, rows, columns, editRoom }: RoomProps) {
     //checl if both inputs are blured setEditmode to false
   };
   return (
-    <li className="flex  border shadow-sm p-4  rounded-lg w-11/12">
-      <p className="text-lg font-semibold flex-1">{roomName}</p>
-      <div className="flex gap-4 flex-3 justify-center items-center text-gray-500">
-        <p className="flex-4">Courses: {courseName || "none"}</p>
+    <li className="w-11/12 flex flex-col gap-4">
+      <div
+        // onClick={hideModel}
+        className="flex  border shadow-sm p-4  rounded-lg "
+      >
+        <p className="text-lg font-semibold flex-1">{roomName}</p>
+        <div className="flex gap-4 flex-3 justify-center items-center text-gray-500">
+          <p className="flex-4">Courses: {courseName || "none"}</p>
 
-        <p className="flex-2 flex gap-1">
-          Rows:
-          <Show>
-            <Show.When isTrue={editMode}>
-              <input
-                ref={rowRef}
-                type="number"
-                className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
-                value={newRows || ""}
-                onChange={inputChangeHandler}
-                onBlur={inputBlurHandler}
-                name="row"
-              />
-            </Show.When>
-            <Show.Else>{rows}</Show.Else>
-          </Show>{" "}
-        </p>
-        <p className="flex-2 flex gap-1">
-          Columns:
-          <Show>
-            <Show.When isTrue={editMode}>
-              <input
-                type="number"
-                //remove the arrows the input type number in className
+          <p className="flex-2 flex gap-1">
+            Rows:
+            <Show>
+              <Show.When isTrue={editMode}>
+                <input
+                  ref={rowRef}
+                  type="number"
+                  className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
+                  value={newRows || ""}
+                  onChange={inputChangeHandler}
+                  onBlur={inputBlurHandler}
+                  name="row"
+                />
+              </Show.When>
+              <Show.Else>{rows}</Show.Else>
+            </Show>{" "}
+          </p>
+          <p className="flex-2 flex gap-1">
+            Columns:
+            <Show>
+              <Show.When isTrue={editMode}>
+                <input
+                  type="number"
+                  //remove the arrows the input type number in className
 
-                className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
-                value={newColumns || ""}
-                onChange={inputChangeHandler}
-                name="column"
-                onBlur={inputBlurHandler}
-              />
-            </Show.When>
-            <Show.Else>{columns}</Show.Else>
-          </Show>
-        </p>
+                  className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
+                  value={newColumns || ""}
+                  onChange={inputChangeHandler}
+                  name="column"
+                  onBlur={inputBlurHandler}
+                />
+              </Show.When>
+              <Show.Else>{columns}</Show.Else>
+            </Show>
+          </p>
+        </div>
+        <div className="flex gap-4 flex-1 justify-end">
+          <EditIcon toggleEditMode={() => setEditMode(!editMode)} />
+        </div>
       </div>
-      <div className="flex gap-4 flex-1 justify-end">
-        <EditIcon toggleEditMode={() => setEditMode(!editMode)} />
-      </div>
+      <div>{children}</div>
     </li>
   );
 }

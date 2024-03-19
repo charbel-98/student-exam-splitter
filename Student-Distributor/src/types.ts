@@ -13,24 +13,30 @@ export interface ScheduleCourse {
   session: string;
   time: string;
 }
+export interface Place {
+  placeNumber: number;
+  roomName: string;
+  courseName: string;
+}
 export interface Student {
   id: string;
   firstName: string;
   lastName: string;
-  place?: string;
+  place?: Place;
 }
 export interface StudentList {
   courseName: string;
-  courseCode: string;
   students: Student[];
 }
+export interface ExamsAtSameTime {
+  courseNames: string[];
+  date: string;
+}
+
 export interface Room {
   id: string;
   roomName: string;
   rows: number | null;
   columns: number | null;
-  courses: {
-    courseName: string;
-    date: string;
-  }[];
+  exams: ExamsAtSameTime[];
 }
