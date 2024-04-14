@@ -40,3 +40,11 @@ export interface Room {
   columns: number | null;
   exams: ExamsAtSameTime[];
 }
+
+export interface RoomDownloadData {
+  ID: string;
+  "First Name": string;
+  "Last Name": string;
+  Place: string;
+  Course: string;
+}

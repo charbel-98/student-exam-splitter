@@ -20,7 +20,6 @@ function RoomRow({
   columns,
   editRoom,
   children,
-  hideModel,
 }: RoomProps) {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [newRows, setNewRows] = useState<number | null>(rows);
