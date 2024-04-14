@@ -1,5 +1,6 @@
 import { ExamsAtSameTime, StudentList } from "../types";
 import { AnimatePresence, motion } from "framer-motion";
+import { Show } from "./Show";
 interface RoomModelProps {
   rows: number;
   columns: number;
@@ -50,9 +51,18 @@ function RoomModel({
           exit={"exit"}
           className="flex"
         >
-          <div className="max-w-[300px] flex flex-col gap-3 border p-4">
+          <div className="flex flex-col gap-3 border p-4">
             <div className="flex flex-col gap-2 justify-center items-center">
-              <p>{exam.courseNames.join(", ")}</p>
+              <p className="font-roboto  font-semibold">
+                {exam.courseNames[0]}
+              </p>
+              <Show>
+                <Show.When isTrue={exam.courseNames[1] !== undefined}>
+                  <p className="font-roboto  font-semibold">
+                    {exam.courseNames[1]}
+                  </p>
+                </Show.When>
+              </Show>
               <p>{exam.date}</p>
             </div>
             {Array.from({ length: rows }).map((_, i) => (
@@ -71,12 +81,12 @@ function RoomModel({
                     ) || undefined;
                   return (
                     <div
-                      className={`size-12 ${
+                      className={`size-8  ${
                         student1 && !student0
-                          ? "bg-red-500"
+                          ? "bg-amber-600 text-white"
                           : student0 && !student1
-                          ? "bg-green-500"
-                          : "bg-gray-200/10"
+                          ? "bg-teal-600 text-white"
+                          : "bg-slate-200 text-black"
                       } rounded-md shadow-md p-2 flex justify-center items-center`}
                       data-toggle="buttons"
                       style={{ marginLeft: "auto" }}

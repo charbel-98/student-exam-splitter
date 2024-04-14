@@ -3,8 +3,16 @@ interface UploadButtonProps {
   text: string;
   handleFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   submit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  excelFileSchedule?: string | ArrayBuffer | null;
+  excelFileStudent?: string | ArrayBuffer | null;
 }
-export function UploadButton({ text, submit, handleFile }: UploadButtonProps) {
+export function UploadButton({
+  text,
+  submit,
+  handleFile,
+  excelFileSchedule,
+  excelFileStudent,
+}: UploadButtonProps) {
   return (
     <form onSubmit={submit}>
       <input
@@ -16,7 +24,12 @@ export function UploadButton({ text, submit, handleFile }: UploadButtonProps) {
       />
       <button
         type="submit"
-        disabled={text.startsWith("Download")}
+        disabled={
+          (text === "Upload Schedule" && !excelFileSchedule) ||
+          (text === "Upload Student List" &&
+            !excelFileStudent &&
+            !excelFileSchedule)
+        }
         className="border shadow-lg px-2 py-4 rounded-lg flex justify-around items-center disabled:bg-white disabled:cursor-not-allowed disabled:text-gray-400 disabled:border-gray-400 disabled:shadow-none"
       >
         <ExcelIcon />
@@ -25,11 +38,16 @@ export function UploadButton({ text, submit, handleFile }: UploadButtonProps) {
     </form>
   );
 }
-export function DownloadButton({ text }: UploadButtonProps) {
+interface downloadButtonProps {
+  text: string;
+  onClick: () => void;
+}
+export function DownloadButton({ text, onClick }: downloadButtonProps) {
   return (
     <button
       type="submit"
-      disabled={text.startsWith("Download")}
+      onClick={onClick}
+      //disabled={text.startsWith("Download")}
       className="border shadow-lg px-2 py-4 rounded-lg flex justify-around items-center disabled:bg-white disabled:cursor-not-allowed disabled:text-gray-400 disabled:border-gray-400 disabled:shadow-none"
     >
       <ExcelIcon />
