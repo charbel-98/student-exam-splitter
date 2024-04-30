@@ -68,11 +68,12 @@ function RoomModel({
             {Array.from({ length: rows }).map((_, i) => (
               <div key={i} className="flex gap-4">
                 {Array.from({ length: columns }).map((_, j) => {
-                  const student0 = students[0].students.find(
-                    (student) =>
-                      student.place?.placeNumber === i * columns + j + 1 &&
-                      roomName === student.place?.roomName
-                  );
+                  const student0 =
+                    students[0]?.students?.find(
+                      (student) =>
+                        student.place?.placeNumber === i * columns + j + 1 &&
+                        roomName === student.place?.roomName
+                    ) || undefined;
                   const student1 =
                     students[1]?.students.find(
                       (student) =>
