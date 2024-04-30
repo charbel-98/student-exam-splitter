@@ -198,7 +198,9 @@ export const useExcelHandling = () => {
               room.columns!,
               room.rows!,
               exam.courseNames,
-              room.roomName!
+              room.roomName!,
+              false,
+              false
             );
           } else {
             handleOddColumns(
@@ -206,7 +208,9 @@ export const useExcelHandling = () => {
               room.columns!,
               room.rows!,
               exam.courseNames,
-              room.roomName!
+              room.roomName!,
+              false,
+              false
             );
           }
           return {
@@ -237,7 +241,9 @@ export const useExcelHandling = () => {
               room.columns!,
               room.rows!,
               exam.courseNames,
-              room.roomName!
+              room.roomName!,
+              false,
+              true
             );
           } else {
             handleOddColumns(
@@ -245,7 +251,9 @@ export const useExcelHandling = () => {
               room.columns!,
               room.rows!,
               exam.courseNames,
-              room.roomName!
+              room.roomName!,
+              false,
+              true
             );
           }
           return {
@@ -267,7 +275,8 @@ export const useExcelHandling = () => {
               room.rows!,
               exam.courseNames,
               room.roomName!,
-              isSecondCourse
+              isSecondCourse,
+              true
             );
           } else {
             handleOddColumns(
@@ -276,7 +285,8 @@ export const useExcelHandling = () => {
               room.rows!,
               exam.courseNames,
               room.roomName!,
-              isSecondCourse
+              isSecondCourse,
+              true
             );
           }
           return {
@@ -297,7 +307,8 @@ export const useExcelHandling = () => {
     rows: number,
     courseNames: string[],
     roomName: string,
-    isSecondCourse?: boolean
+    isSecondCourse?: boolean,
+    isDoubleCourse?: boolean
   ) => {
     let counter = isSecondCourse ? 2 : 1;
     let edgeCounter = 0;
@@ -313,12 +324,12 @@ export const useExcelHandling = () => {
         } as Place;
         if (isSecondCourse) {
           edgeCounter % 2 !== 0 ? (counter += 3) : (counter += 1);
-        } else {
+        } else if (!isSecondCourse && isDoubleCourse) {
           edgeCounter % 2 === 0 ? (counter += 3) : (counter += 1);
-        }
-
+        } else counter += 2;
         edgeCounter++;
       }
+
       if (
         ((index + 1) * 2) % columns! !== 0 &&
         index < (rows! * columns!) / 2
@@ -338,17 +349,31 @@ export const useExcelHandling = () => {
     rows: number,
     courseNames: string[],
     roomName: string,
-    isSecondCourse?: boolean
+    isSecondCourse?: boolean,
+    isDoubleCourse?: boolean
   ) => {
     let counter = isSecondCourse ? 2 : 1;
+    let edgeCounter = 1;
     students.map((student, index) => {
-      if (index < (rows! * columns!) / 2) {
+      if (isDoubleCourse && index < (rows! * columns!) / 2) {
         student.place = {
           placeNumber: counter,
           roomName: roomName,
           courseName: courseNames[0],
         } as Place;
         counter += 2;
+      } else if (index < (rows! * columns!) / 2) {
+        student.place = {
+          placeNumber: counter,
+          roomName: roomName,
+          courseName: courseNames[0],
+        } as Place;
+        if (((index + 1) * 2) % columns! === edgeCounter) {
+          counter += 1;
+          edgeCounter++;
+        } else {
+          counter += 2;
+        }
       }
     });
   };
@@ -357,6 +382,7 @@ export const useExcelHandling = () => {
     excelFileSchedule,
     setExcelFileSchedule,
     excelDataSchedule,
+    setExcelDataSchedule,
     excelFileStudent,
     setExcelFileStudent,
     excelDataStudent,

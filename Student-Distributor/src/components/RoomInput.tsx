@@ -6,12 +6,14 @@ interface RoomInputProps {
   setRooms: React.Dispatch<React.SetStateAction<Room[] | []>>;
   courseName: string;
   date: string;
+  time: string;
 }
 
 const RoomInput: React.FC<RoomInputProps> = ({
   setRooms: setValues,
   courseName,
   date,
+  time,
 }: RoomInputProps) => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState<string | null>("");
@@ -50,7 +52,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
               setError("Course already exists in this room");
               return prev;
             } else {
-              return addCourseToRoom(prev, inputValue, courseName, date);
+              return addCourseToRoom(prev, inputValue, courseName, date, time);
             }
           } else {
             return [
@@ -61,7 +63,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
                 rows: null,
                 columns: null,
                 exams: [
-                  { courseNames: [courseName], date },
+                  { courseNames: [courseName], date, time },
                 ] as ExamsAtSameTime[],
               },
             ] as Room[];
@@ -99,7 +101,8 @@ function addCourseToRoom(
   prev: Room[],
   inputValue: string,
   courseName: string,
-  date: string
+  date: string,
+  time: string
 ): Room[] {
   return prev.map((room: Room) => {
     if (room.roomName === inputValue) {
@@ -123,7 +126,7 @@ function addCourseToRoom(
           ...room,
           exams: [
             ...room.exams,
-            { courseNames: [courseName], date },
+            { courseNames: [courseName], date, time },
           ] as ExamsAtSameTime[],
         };
       }

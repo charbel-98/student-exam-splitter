@@ -1,6 +1,6 @@
 import Nav from "./components/Nav";
 import { DownloadButton, UploadButton } from "./components/UploadButton";
-import { CourseInputState, RoomDownloadData } from "./types";
+import { CourseInputState, RoomDownloadData, StudentList } from "./types";
 import Course from "./components/Course";
 import RoomRow from "./components/Room";
 import RoomModel from "./components/RoomModel";
@@ -13,6 +13,7 @@ function App() {
     excelFileSchedule,
     // setExcelFileSchedule,
     excelDataSchedule,
+    setExcelDataSchedule,
     excelFileStudent,
     // setExcelFileStudent,
     excelDataStudent,
@@ -32,54 +33,119 @@ function App() {
   const handleCourseDownload = () => {
     const wb = XLSX.utils.book_new();
     excelDataStudent.forEach((studentList) => {
-      const processedStudents = studentList.students.map((student) => ({
-        ID: student.id,
-        "First Name": student.firstName,
-        "Last Name": student.lastName,
-        Place:
-          student?.place?.roomName + "      " + student?.place?.placeNumber, // Use placeNumber from the nested place object
-        Signature: "",
-      }));
-      const ws = XLSX.utils.json_to_sheet(processedStudents);
-      XLSX.utils.book_append_sheet(wb, ws, studentList.courseName);
+      function splitStudentListByRoom(studentList: StudentList) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const splitedStudents: any = {};
+        studentList.students.forEach((student) => {
+          if (student.place) {
+            const value = student.place.roomName;
+
+            if (!splitedStudents[value]) {
+              splitedStudents[value] = {
+                courseName: studentList.courseName,
+                students: [],
+              }; // Create a new array for the value if it doesn't exist
+            }
+
+            splitedStudents[value].students.push(student); // Push the object to the array corresponding to the value
+          } else {
+            if (!splitedStudents.noPlace) {
+              splitedStudents["noPlace"] = {
+                courseName: studentList.courseName,
+                students: [],
+              }; // Create a new array for the value if it doesn't exist
+            }
+
+            splitedStudents["noPlace"].students.push(student);
+          }
+        });
+
+        return Object.values(splitedStudents);
+      }
+      (splitStudentListByRoom(studentList) as StudentList[]).forEach((list) => {
+        const processedStudents = list.students.map((student) => ({
+          ID: student.id,
+          "Last Name": student.lastName,
+          "First Name": student.firstName,
+          Place: student?.place?.placeNumber, // Use placeNumber from the nested place object
+          Signature: "",
+        }));
+        const ws = XLSX.utils.json_to_sheet(processedStudents);
+        const roomInExcelTitle = list.students[0].place?.roomName || "unplaced";
+        XLSX.utils.book_append_sheet(
+          wb,
+          ws,
+          list.courseName + "  " + roomInExcelTitle
+        );
+      });
     });
     XLSX.writeFile(wb, "Students.xlsx");
   };
   const handleRoomDownload = () => {
-    console.log("heloooooooooooooooooooooooooooooooo");
     const wb = XLSX.utils.book_new();
+
     rooms.forEach((room) => {
-      //one sheet per exam
       room.exams.forEach((exam, i) => {
-        let result: RoomDownloadData[] | [] = [];
-        //find the student list for each exam
+        let result = [];
+
         exam.courseNames.forEach((course) => {
           const studentsInThisCourse = excelDataStudent.find(
             (studentList) => studentList.courseName === course
           );
+
           studentsInThisCourse?.students.forEach((student) => {
             if (student.place?.roomName === room.roomName) {
-              result = [
-                ...result,
-                {
-                  ID: student.id,
-                  "First Name": student.firstName,
-                  "Last Name": student.lastName,
-                  Place:
-                    student?.place?.roomName +
-                    "\t" +
-                    student?.place?.placeNumber, // Use placeNumber from the nested place object
-                  Course: course,
-                },
-              ];
+              result.push({
+                ID: student.id,
+                "Last Name": student.lastName,
+                "First Name": student.firstName,
+                Place: String(student?.place?.placeNumber),
+                Course: course,
+              });
             }
           });
         });
-        //excel handling
-        const ws = XLSX.utils.json_to_sheet(result);
-        XLSX.utils.book_append_sheet(wb, ws, `${room.roomName} ${i}`);
+
+        const date = new Date(exam.date)
+          .toLocaleDateString()
+          .split("/")
+          .join("-");
+        const wsName = `${room.roomName} ${date} ${exam.time}`;
+        const ws = XLSX.utils.json_to_sheet(result, {
+          header: ["ID", "Last Name", "First Name", "Place", "Course"],
+        });
+
+        // Add university name and faculty as text before table
+        // ws["A1"] = {
+        //   t: "s",
+        //   v: "University Name: YourUniversity",
+        //   s: { font: { bold: true } },
+        // };
+        // ws["A2"] = {
+        //   t: "s",
+        //   v: "Faculty: YourFaculty",
+        //   s: { font: { bold: true } },
+        // };
+
+        // Merge cells for university name and faculty text
+        // ws["!merges"] = [
+        //   { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Merge for University Name
+        //   { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // Merge for Faculty
+        //   // Add empty merged cells for spacing
+        //   { s: { r: 2, c: 0 }, e: { r: 4, c: 4 } }, // Empty merged cells between university name/faculty and the table
+        // ];
+
+        // Set print options
+        // const wsPrintOptions = {
+        //   printTitles: "$A$1:$E$5", // Set the print title to include the first four rows
+        //   printArea: `A6:E${result.length + 6}`, // Set the print area to include the table and text, starting from row 5
+        // };
+        // ws["!printOptions"] = wsPrintOptions;
+
+        XLSX.utils.book_append_sheet(wb, ws, wsName);
       });
     });
+
     XLSX.writeFile(wb, "Rooms.xlsx");
   };
 
@@ -125,6 +191,7 @@ function App() {
             >
               {excelDataSchedule?.map((course, index) => (
                 <Course
+                  time={course.time}
                   key={index}
                   courseName={course.courseName}
                   date={course.date + " " + course.time}
@@ -143,6 +210,7 @@ function App() {
                   setOpenRoomInput={setOpenRoomInput}
                   rooms={rooms}
                   setRooms={setRooms}
+                  setCourse={setExcelDataSchedule}
                 ></Course>
               ))}
             </Show.When>

@@ -16,6 +16,8 @@ interface CourseProps {
   openRoomInput: CourseInputState;
   setOpenRoomInput: React.Dispatch<React.SetStateAction<CourseInputState[]>>;
   rooms: Room[] | [];
+  time: string;
+  setCourse: React.Dispatch<React.SetStateAction<string>>;
 }
 function Course({
   courseName,
@@ -24,6 +26,7 @@ function Course({
   session,
   students,
   openRoomInput,
+  time,
   setOpenRoomInput,
   rooms,
   setRooms,
@@ -82,7 +85,12 @@ function Course({
             />,
             document.getElementById("portal") as HTMLElement
           )}
-          <RoomInput setRooms={setRooms} courseName={courseName} date={date} />
+          <RoomInput
+            setRooms={setRooms}
+            courseName={courseName}
+            date={date}
+            time={time}
+          />
         </>
       )}
     </li>

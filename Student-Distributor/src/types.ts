@@ -31,6 +31,7 @@ export interface StudentList {
 export interface ExamsAtSameTime {
   courseNames: string[];
   date: string;
+  time: string;
 }
 
 export interface Room {
