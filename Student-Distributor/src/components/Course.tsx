@@ -17,6 +17,7 @@ interface CourseProps {
   setOpenRoomInput: React.Dispatch<React.SetStateAction<CourseInputState[]>>;
   rooms: Room[] | [];
   time: string;
+  setCourse: React.Dispatch<React.SetStateAction<string>>;
 }
 function Course({
   courseName,

@@ -13,6 +13,7 @@ function App() {
     excelFileSchedule,
     // setExcelFileSchedule,
     excelDataSchedule,
+    setExcelDataSchedule,
     excelFileStudent,
     // setExcelFileStudent,
     excelDataStudent,
@@ -115,29 +116,31 @@ function App() {
         });
 
         // Add university name and faculty as text before table
-        ws["A1"] = {
-          t: "s",
-          v: "University Name: YourUniversity",
-          s: { font: { bold: true } },
-        };
-        ws["A2"] = {
-          t: "s",
-          v: "Faculty: YourFaculty",
-          s: { font: { bold: true } },
-        };
+        // ws["A1"] = {
+        //   t: "s",
+        //   v: "University Name: YourUniversity",
+        //   s: { font: { bold: true } },
+        // };
+        // ws["A2"] = {
+        //   t: "s",
+        //   v: "Faculty: YourFaculty",
+        //   s: { font: { bold: true } },
+        // };
 
         // Merge cells for university name and faculty text
-        ws["!merges"] = [
-          { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } },
-          { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } },
-        ];
+        // ws["!merges"] = [
+        //   { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Merge for University Name
+        //   { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // Merge for Faculty
+        //   // Add empty merged cells for spacing
+        //   { s: { r: 2, c: 0 }, e: { r: 4, c: 4 } }, // Empty merged cells between university name/faculty and the table
+        // ];
 
         // Set print options
-        const wsPrintOptions = {
-          printTitles: "$A$1:$E$2", // Set the print title to include the first two rows
-          printArea: `A1:E${result.length + 2}`, // Set the print area to include the table and text
-        };
-        ws["!printOptions"] = wsPrintOptions;
+        // const wsPrintOptions = {
+        //   printTitles: "$A$1:$E$5", // Set the print title to include the first four rows
+        //   printArea: `A6:E${result.length + 6}`, // Set the print area to include the table and text, starting from row 5
+        // };
+        // ws["!printOptions"] = wsPrintOptions;
 
         XLSX.utils.book_append_sheet(wb, ws, wsName);
       });
@@ -207,6 +210,7 @@ function App() {
                   setOpenRoomInput={setOpenRoomInput}
                   rooms={rooms}
                   setRooms={setRooms}
+                  setCourse={setExcelDataSchedule}
                 ></Course>
               ))}
             </Show.When>
