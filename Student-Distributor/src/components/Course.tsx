@@ -2,9 +2,9 @@ import { createPortal } from "react-dom";
 import { PlusIcon } from "../assets";
 import TrashIcon from "../assets/TrashIcon";
 import RoomInput from "./RoomInput";
-import { CourseInputState, Room } from "../types";
+import {CourseInputState, ExamsAtSameTime, Room} from "../types";
 import CloseIcon from "../assets/CloseIcon";
-import { useState } from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 interface CourseProps {
   courseName: string;
@@ -48,7 +48,7 @@ function Course({
               //check if the room has the courseName in it's array if yes render the div
               room?.exams?.some((exam) =>
                 exam.courseNames.some((course) => course === courseName)
-              ) && <RoomCard key={index} roomName={room.roomName} />
+              ) && <RoomCard key={index} roomName={room.roomName} setRooms={setRooms} courseName={courseName} />
           )}
         </div>
       </div>
@@ -96,7 +96,8 @@ function Course({
     </li>
   );
 }
-function RoomCard({ roomName }: { roomName: string }) {
+
+function RoomCard({ roomName, setRooms, courseName }: { roomName: string, courseName:string, setRooms: React.Dispatch<React.SetStateAction<Room[]>>;}) {
   const [showIcon, setShowIcon] = useState(false);
   const pvariants = {
     initial: { x: 0 },
@@ -125,7 +126,34 @@ function RoomCard({ roomName }: { roomName: string }) {
       }}
     >
       <AnimatePresence>
-        {showIcon && <CloseIcon classes="cursor-pointer" />}
+        {showIcon && <CloseIcon classes="cursor-pointer" onClick={() => {
+          setRooms((prev) => {
+            // remove the course from rhe room or remove the room if it has only one exam
+            console.log('charbel', courseName)
+            return prev.map((room) => {
+              if (
+                room.roomName === roomName &&
+                room.exams?.length === 1 && room.exams[0].courseNames.length === 1
+              ) {
+                return { ...room, exams: [] };
+              } else if (room.roomName === roomName) {
+                return {
+                  ...room,
+                  exams: room.exams?.map((exam) => {
+                    console.log('charbel', exam.courseNames, courseName)
+                    return {
+                      ...exam,
+                      courseNames: exam.courseNames.filter(c => c !== courseName)
+                    };
+                  }),
+                };
+              } else {
+                return room;
+              }
+            });
+
+          });
+        }} />}
       </AnimatePresence>
 
       <motion.p
@@ -139,4 +167,5 @@ function RoomCard({ roomName }: { roomName: string }) {
     </motion.div>
   );
 }
+
 export default Course;
