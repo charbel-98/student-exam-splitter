@@ -7,7 +7,7 @@ import RoomModel from "./components/RoomModel";
 import { AnimatePresence } from "framer-motion";
 import { useExcelHandling } from "./hooks/useExcelHandling";
 import { Show } from "./components/Show";
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx-js-style";
 function App() {
   const {
     excelFileSchedule,
@@ -82,72 +82,123 @@ function App() {
     XLSX.writeFile(wb, "Students.xlsx");
   };
   const handleRoomDownload = () => {
+    const universityName = "University Antonine";
+    const facultyName = "Faculty of Engineering";
+    const semester = "Final S2 2023-2024";
+    const date = "Date: 25/3/2021";
+    const time = "8h30-9h30";
+    const course1 = "Prog 305";
+    const course2 = "Web multimedia technologies";
+    const room = "Room: C1.8";
+
     const wb = XLSX.utils.book_new();
 
-    rooms.forEach((room) => {
-      room.exams.forEach((exam, i) => {
-        let result = [];
+    rooms.forEach((roomData) => {
+      roomData.exams.forEach((exam, i) => {
+        const examDate = new Date(exam.date).toLocaleDateString().split("/").join("-");
+        const wsName = `${roomData.roomName} ${examDate} ${exam.time.split(":").join("-")}`;
 
-        exam.courseNames.forEach((course) => {
-          const studentsInThisCourse = excelDataStudent.find(
-            (studentList) => studentList.courseName === course
-          );
+        let rows = [
+          [
+            { v: universityName, t: "s", s: { font: { bold: true, sz: 24 }, alignment: { horizontal: "left" } } },
+            { v: "", t: "s" },
+            { v: "", t: "s" }
+          ],
+          [
+            { v: facultyName, t: "s", s: { font: { italic: true }, alignment: { horizontal: "left" } } },
+            { v: "", t: "s" },
+            { v: "", t: "s" }
+          ],
+          [
+            { v: semester, t: "s", s: { font: { italic: true }, alignment: { horizontal: "left" } } },
+            { v: "", t: "s" },
+            { v: "", t: "s" }
+          ],
+          [],
+          [
+            { v: date, t: "s", s: { alignment: {  horizontal: "left" } } },
 
-          studentsInThisCourse?.students.forEach((student) => {
-            if (student.place?.roomName === room.roomName) {
-              result.push({
-                ID: student.id,
-                "Last Name": student.lastName,
-                "First Name": student.firstName,
-                Place: String(student?.place?.placeNumber),
-                Course: course,
-              });
+          ],
+
+          [
+            { v: course1, t: "s", s: { font: { italic: true }, alignment: { horizontal: "left" } } },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: time, t: "s", s: { alignment: {  horizontal: "left" } } },
+
+          ],
+
+          [
+            { v: room, t: "s", s: { font: { italic: true }, alignment: { horizontal: "left" } } },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: "", t: "s" },
+            { v: course2, t: "s", s: { font: { italic: true }, alignment: { horizontal: "left" } } },
+          ],
+          [],
+          [
+            { v: "NO", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+
+            { v: "ID", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+            { v: "Last Name", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+            { v: "First Name", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+            { v: "Place", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+            // { v: "Course", t: "s", s: { font: { bold: true, italic: true }, border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } }
+          ]
+        ];
+
+        exam.courseNames.forEach(course => {
+          const studentsInThisCourse = excelDataStudent.find((studentList) => studentList.courseName === course);
+          studentsInThisCourse?.students.forEach((student, i) => {
+            if (student.place?.roomName === roomData.roomName) {
+              rows.push([
+                { v: String(++i), t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+
+                { v: student.id, t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+                { v: student.lastName, t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+                { v: student.firstName, t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+                { v: String(student.place?.placeNumber), t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } },
+                // { v: course, t: "s", s: { border: { top: { style: "thick" }, bottom: { style: "thick" }, left: { style: "thick" }, right: { style: "thick" } } } }
+              ]);
             }
           });
         });
 
-        const date = new Date(exam.date)
-          .toLocaleDateString()
-          .split("/")
-          .join("-");
-        const wsName = `${room.roomName} ${date} ${exam.time}`;
-        const ws = XLSX.utils.json_to_sheet(result, {
-          header: ["ID", "Last Name", "First Name", "Place", "Course"],
-        });
+        // Merge cells for university name, faculty, semester, date, program, and room
+        const merges = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Merge university name
+          { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // Merge faculty
+          { s: { r: 2, c: 0 }, e: { r: 2, c: 4 } }, // Merge semester
+          { s: { r: 4, c: 0 }, e: { r: 4, c: 2 } }, // Merge date
+          { s: { r: 5, c: 0 }, e: { r: 5, c: 3 } }, // Merge program
+          { s: { r: 6, c: 0 }, e: { r: 6, c: 3 } } // Merge room
+        ];
 
-        // Add university name and faculty as text before table
-        // ws["A1"] = {
-        //   t: "s",
-        //   v: "University Name: YourUniversity",
-        //   s: { font: { bold: true } },
-        // };
-        // ws["A2"] = {
-        //   t: "s",
-        //   v: "Faculty: YourFaculty",
-        //   s: { font: { bold: true } },
-        // };
+        const colWidths = [
+          { wch: 4 }, // width of column A
+          { wch: 9 }, // width of column B
+          { wch: 20 }, // width of column C
+          { wch: 20 }, // width of column D
+          { wch: 6 }  // width of column E
+          // Add more objects for additional columns if needed
+        ];
 
-        // Merge cells for university name and faculty text
-        // ws["!merges"] = [
-        //   { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Merge for University Name
-        //   { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // Merge for Faculty
-        //   // Add empty merged cells for spacing
-        //   { s: { r: 2, c: 0 }, e: { r: 4, c: 4 } }, // Empty merged cells between university name/faculty and the table
-        // ];
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        // Merge cells
 
-        // Set print options
-        // const wsPrintOptions = {
-        //   printTitles: "$A$1:$E$5", // Set the print title to include the first four rows
-        //   printArea: `A6:E${result.length + 6}`, // Set the print area to include the table and text, starting from row 5
-        // };
-        // ws["!printOptions"] = wsPrintOptions;
-
+        ws["!merges"] = merges;
+        ws["!cols"]= colWidths;
         XLSX.utils.book_append_sheet(wb, ws, wsName);
       });
     });
 
     XLSX.writeFile(wb, "Rooms.xlsx");
   };
+
+
 
   return (
     <>
