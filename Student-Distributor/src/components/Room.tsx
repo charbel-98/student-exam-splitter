@@ -32,6 +32,7 @@ function RoomRow({
     if (e.target.name === 'row') {
       setNewRows(Number(e.target.value));
     }
+
     if (e.target.name === 'column') {
       setNewColumns(Number(e.target.value));
     }
@@ -50,6 +51,7 @@ function RoomRow({
       });
       rowRef.current = null;
     }
+
     if (e.target.name === 'column') {
       //add or edit the field column of the room we are editing
       editRoom((prev) => {
@@ -63,6 +65,7 @@ function RoomRow({
     }
     //checl if both inputs are blured setEditmode to false
   };
+
   return (
     <li className="w-11/12 flex flex-col gap-4">
       <div
@@ -117,4 +120,5 @@ function RoomRow({
     </li>
   );
 }
+
 export default RoomRow;

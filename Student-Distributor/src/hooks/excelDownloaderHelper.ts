@@ -13,6 +13,7 @@ const defaultBorderStyle = {
 const createEmptyCell = () => {
   return { v: '', t: 's' };
 };
+
 const createCell = (
   value: string,
   bold = false,
@@ -30,6 +31,7 @@ const createCell = (
     },
   };
 };
+
 function splitStudentListByRoom(studentList: StudentList) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const splitedStudents: any = {};
@@ -124,6 +126,7 @@ const createHeaderRows = (
       [],
     ];
   }
+
   return [
     [
       {
@@ -160,6 +163,7 @@ const createHeaderRows = (
     [],
   ];
 };
+
 const createExcelFooter = () => {
   return [
     [],
@@ -201,6 +205,7 @@ const createExcelFooter = () => {
     ],
   ];
 };
+
 const createStudentRows = (students: Student[], isRoom: boolean) => {
   const headerCells = [
     createCell('NO', true, true, true),

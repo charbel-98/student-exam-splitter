@@ -19,6 +19,7 @@ function EditIcon({ toggleEditMode }: { toggleEditMode: () => void }) {
   function handleMouseLeaveControls() {
     controls.start('initial');
   }
+
   return (
     <svg
       onMouseEnter={handleMouseEnterControls}

@@ -54,6 +54,13 @@
         "count": 1
       }
     ],
-    "import/no-duplicates": "error"
+    "import/no-duplicates": "error",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "function", "next": "expression" },
+      { "blankLine": "always", "prev": "expression", "next": "function" },
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "return" }
+    ]
   }
 }

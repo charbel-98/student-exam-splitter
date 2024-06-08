@@ -125,6 +125,7 @@ export const useExcelHandling = () => {
       });
     }
   };
+
   console.log(excelDataSchedule);
   const handleStudentSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -160,6 +161,7 @@ export const useExcelHandling = () => {
       });
     }
   };
+
   console.log(rooms);
   console.log(excelDataStudent);
   const splitStudents = () => {
@@ -213,17 +215,20 @@ export const useExcelHandling = () => {
               false,
             );
           }
+
           return {
             courseName: studentList.courseName,
             students: [...studentsWithPlaces, ...studentsWithoutPlaces],
           } as StudentList;
         } else {
           console.log('Course not found');
+
           return studentList as StudentList;
         }
       }) as StudentList[];
     });
   };
+
   const handleDoubleCourse = (exam: ExamsAtSameTime, room: Room) => {
     setExcelDataStudent((prev) => {
       return prev.map((studentList) => {
@@ -256,6 +261,7 @@ export const useExcelHandling = () => {
               true,
             );
           }
+
           return {
             courseName: studentList.courseName,
             students: [...studentsWithPlaces, ...studentsWithoutPlaces],
@@ -289,12 +295,14 @@ export const useExcelHandling = () => {
               true,
             );
           }
+
           return {
             courseName: studentList.courseName,
             students: [...studentsWithPlaces, ...studentsWithoutPlaces],
           } as StudentList;
         } else {
           console.log('Course not found');
+
           return studentList as StudentList;
         }
       }) as StudentList[];
@@ -312,6 +320,7 @@ export const useExcelHandling = () => {
   ) => {
     let counter = isSecondCourse ? 2 : 1;
     let edgeCounter = 0;
+
     return students.map((student, index) => {
       if (
         ((index + 1) * 2) % columns! === 0 &&
@@ -343,6 +352,7 @@ export const useExcelHandling = () => {
       }
     });
   };
+
   const handleOddColumns = (
     students: Student[],
     columns: number,

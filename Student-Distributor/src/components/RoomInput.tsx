@@ -28,6 +28,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
     setError(null);
     setInputValue(event.target.value);
   };
+
   console.log(courseName);
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -50,6 +51,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
             );
             if (courseExistInRoom) {
               setError('Course already exists in this room');
+
               return prev;
             } else {
               return addCourseToRoom(prev, inputValue, courseName, date, time);
@@ -75,6 +77,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
       }
     }
   };
+
   return (
     <div
       className={`absolute right-[0] top-12 bg-white z-50 max-w-80 flex flex-col border rounded-md shadow-md w-2/12 p-4 gap-5 ${
@@ -97,6 +100,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
     </div>
   );
 };
+
 function addCourseToRoom(
   prev: Room[],
   inputValue: string,

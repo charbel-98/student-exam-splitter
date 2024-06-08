@@ -76,6 +76,7 @@ export const useExcelDownloader = ({
     });
     XLSX.writeFile(wb, 'Students.xlsx');
   };
+
   const handleRoomDownload = () => {
     const wb = XLSX.utils.book_new();
 
@@ -158,5 +159,6 @@ export const useExcelDownloader = ({
 
     XLSX.writeFile(wb, 'Rooms.xlsx');
   };
+
   return { handleCourseDownload, handleRoomDownload };
 };

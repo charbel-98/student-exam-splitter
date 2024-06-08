@@ -69,6 +69,7 @@ function Course({
                 if (item.courseName === courseName) {
                   return { ...item, openForm: true };
                 }
+
                 return { ...item, openForm: false };
               });
             });
@@ -149,6 +150,7 @@ function RoomCard({
               setRooms((prev) => {
                 // remove the course from rhe room or remove the room if it has only one exam
                 console.log('charbel', courseName);
+
                 return prev.map((room) => {
                   if (
                     room.roomName === roomName &&
@@ -161,6 +163,7 @@ function RoomCard({
                       ...room,
                       exams: room.exams?.map((exam) => {
                         console.log('charbel', exam.courseNames, courseName);
+
                         return {
                           ...exam,
                           courseNames: exam.courseNames.filter(

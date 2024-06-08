@@ -27,6 +27,7 @@ function CloseIcon({
       },
     },
   };
+
   return (
     <motion.svg
       variants={variants}

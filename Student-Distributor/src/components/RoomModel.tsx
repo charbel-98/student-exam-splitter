@@ -81,6 +81,7 @@ function RoomModel({
                         student.place?.placeNumber === i * columns + j + 1 &&
                         roomName === student.place?.roomName,
                     ) || undefined;
+
                   return (
                     <div
                       className={`size-8  ${

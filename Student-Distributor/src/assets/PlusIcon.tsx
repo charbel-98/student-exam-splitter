@@ -19,6 +19,7 @@ function PlusIcon({ openHandler }: { openHandler: () => void }) {
   function handleMouseLeaveControls() {
     controls.start('initial');
   }
+
   return (
     <motion.svg
       onClick={openHandler}

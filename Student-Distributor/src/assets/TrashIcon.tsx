@@ -19,6 +19,7 @@ function TrashIcon() {
   function handleMouseLeaveControls() {
     controls.start('initial');
   }
+
   return (
     <svg
       onMouseEnter={handleMouseEnterControls}
