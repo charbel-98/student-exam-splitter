@@ -1,4 +1,5 @@
-import { ExcelIcon } from "../assets";
+import { ExcelIcon } from '../assets';
+
 interface UploadButtonProps {
   text: string;
   handleFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +18,7 @@ export function UploadButton({
     <form onSubmit={submit}>
       <input
         type="file"
-        name={text.split(" ")[1]}
+        name={text.split(' ')[1]}
         accept=".xlsx, .xls"
         className=""
         onChange={handleFile}
@@ -25,8 +26,8 @@ export function UploadButton({
       <button
         type="submit"
         disabled={
-          (text === "Upload Schedule" && !excelFileSchedule) ||
-          (text === "Upload Student List" &&
+          (text === 'Upload Schedule' && !excelFileSchedule) ||
+          (text === 'Upload Student List' &&
             !excelFileStudent &&
             !excelFileSchedule)
         }

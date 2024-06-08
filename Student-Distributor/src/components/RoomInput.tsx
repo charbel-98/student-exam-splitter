@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ExamsAtSameTime, Room } from "../types";
-import nextId from "react-id-generator";
+import React, { useEffect, useRef, useState } from 'react';
+import nextId from 'react-id-generator';
+import { ExamsAtSameTime, Room } from '../types';
 
 interface RoomInputProps {
   setRooms: React.Dispatch<React.SetStateAction<Room[] | []>>;
@@ -15,8 +15,8 @@ const RoomInput: React.FC<RoomInputProps> = ({
   date,
   time,
 }: RoomInputProps) => {
-  const [inputValue, setInputValue] = useState("");
-  const [error, setError] = useState<string | null>("");
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState<string | null>('');
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     // Focus the input element on mount
@@ -30,12 +30,12 @@ const RoomInput: React.FC<RoomInputProps> = ({
   };
   console.log(courseName);
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       console.log(event.key);
       const regex = /D\d\.\d+/;
 
-      if (inputValue.trim() !== "" && regex.test(inputValue)) {
+      if (inputValue.trim() !== '' && regex.test(inputValue)) {
         setValues((prev) => {
           const roomExists = prev.some((room) => room.roomName === inputValue);
           console.log(roomExists);
@@ -45,11 +45,11 @@ const RoomInput: React.FC<RoomInputProps> = ({
               (room) =>
                 room.roomName === inputValue &&
                 room.exams?.some((exam) =>
-                  exam.courseNames.some((course) => course === courseName)
-                )
+                  exam.courseNames.some((course) => course === courseName),
+                ),
             );
             if (courseExistInRoom) {
-              setError("Course already exists in this room");
+              setError('Course already exists in this room');
               return prev;
             } else {
               return addCourseToRoom(prev, inputValue, courseName, date, time);
@@ -58,7 +58,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
             return [
               ...prev,
               {
-                id: nextId("room-"),
+                id: nextId('room-'),
                 roomName: inputValue,
                 rows: null,
                 columns: null,
@@ -69,16 +69,16 @@ const RoomInput: React.FC<RoomInputProps> = ({
             ] as Room[];
           }
         });
-        setInputValue("");
+        setInputValue('');
       } else {
-        setError("Please enter a valid room name");
+        setError('Please enter a valid room name');
       }
     }
   };
   return (
     <div
       className={`absolute right-[0] top-12 bg-white z-50 max-w-80 flex flex-col border rounded-md shadow-md w-2/12 p-4 gap-5 ${
-        error && "border-l-2 border-l-red-500"
+        error && 'border-l-2 border-l-red-500'
       }`}
     >
       <label>Room</label>
@@ -89,7 +89,7 @@ const RoomInput: React.FC<RoomInputProps> = ({
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
         className={`border shadow-sm ps-3 rounded-lg focus:outline-none ${
-          error && "border-l-4 border-l-red-500"
+          error && 'border-l-4 border-l-red-500'
         }`}
         placeholder="eg. D1.1"
       />
@@ -102,7 +102,7 @@ function addCourseToRoom(
   inputValue: string,
   courseName: string,
   date: string,
-  time: string
+  time: string,
 ): Room[] {
   return prev.map((room: Room) => {
     if (room.roomName === inputValue) {

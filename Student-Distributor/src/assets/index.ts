@@ -1,4 +1,5 @@
-import ExcelIcon from "./ExcelIcon";
-import PlusIcon from "./PlusIcon";
-import EditIcon from "./EditIcon";
+import EditIcon from './EditIcon';
+import ExcelIcon from './ExcelIcon';
+import PlusIcon from './PlusIcon';
+
 export { ExcelIcon, PlusIcon, EditIcon };

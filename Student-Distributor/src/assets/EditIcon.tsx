@@ -1,23 +1,23 @@
-import { useAnimation, motion } from "framer-motion";
+import { useAnimation, motion } from 'framer-motion';
 
 function EditIcon({ toggleEditMode }: { toggleEditMode: () => void }) {
   const variants = {
     initial: {
       scale: 1,
-      stroke: "#000000",
+      stroke: '#000000',
     },
     hover: {
       scale: [1.1],
-      stroke: "green",
+      stroke: 'green',
     },
   };
   const controls = useAnimation();
   function handleMouseEnterControls() {
-    controls.start("hover");
+    controls.start('hover');
   }
 
   function handleMouseLeaveControls() {
-    controls.start("initial");
+    controls.start('initial');
   }
   return (
     <svg

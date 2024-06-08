@@ -1,5 +1,12 @@
-import { motion } from "framer-motion";
-function CloseIcon({ classes = "" , onClick }: { classes?: string, onClick: () => void }) {
+import { motion } from 'framer-motion';
+
+function CloseIcon({
+  classes = '',
+  onClick,
+}: {
+  classes?: string;
+  onClick: () => void;
+}) {
   const variants = {
     initial: {
       scale: 1,

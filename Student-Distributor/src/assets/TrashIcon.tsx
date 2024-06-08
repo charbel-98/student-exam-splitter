@@ -1,23 +1,23 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation } from 'framer-motion';
 
 function TrashIcon() {
   const variants = {
     initial: {
       scale: 1,
-      stroke: "#000000",
+      stroke: '#000000',
     },
     hover: {
       scale: [1.1],
-      stroke: "red",
+      stroke: 'red',
     },
   };
   const controls = useAnimation();
   function handleMouseEnterControls() {
-    controls.start("hover");
+    controls.start('hover');
   }
 
   function handleMouseLeaveControls() {
-    controls.start("initial");
+    controls.start('initial');
   }
   return (
     <svg

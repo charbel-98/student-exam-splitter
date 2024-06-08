@@ -44,8 +44,8 @@ export interface Room {
 
 export interface RoomDownloadData {
   ID: string;
-  "First Name": string;
-  "Last Name": string;
+  'First Name': string;
+  'Last Name': string;
   Place: string;
   Course: string;
 }

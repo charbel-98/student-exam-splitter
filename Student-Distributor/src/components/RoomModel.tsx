@@ -1,6 +1,7 @@
-import { ExamsAtSameTime, StudentList } from "../types";
-import { AnimatePresence, motion } from "framer-motion";
-import { Show } from "./Show";
+import { AnimatePresence, motion } from 'framer-motion';
+import { Show } from './Show';
+import { ExamsAtSameTime, StudentList } from '../types';
+
 interface RoomModelProps {
   rows: number;
   columns: number;
@@ -17,7 +18,7 @@ function RoomModel({
   showRoomModel,
   roomName,
 }: RoomModelProps) {
-  console.log("--------------------------------");
+  console.log('--------------------------------');
   console.log(exam);
   console.log(students);
   const variants = {
@@ -48,7 +49,7 @@ function RoomModel({
           variants={variants}
           initial="hidden"
           animate="visible"
-          exit={"exit"}
+          exit={'exit'}
           className="flex"
         >
           <div className="flex flex-col gap-3 border p-4">
@@ -72,25 +73,25 @@ function RoomModel({
                     students[0]?.students?.find(
                       (student) =>
                         student.place?.placeNumber === i * columns + j + 1 &&
-                        roomName === student.place?.roomName
+                        roomName === student.place?.roomName,
                     ) || undefined;
                   const student1 =
                     students[1]?.students.find(
                       (student) =>
                         student.place?.placeNumber === i * columns + j + 1 &&
-                        roomName === student.place?.roomName
+                        roomName === student.place?.roomName,
                     ) || undefined;
                   return (
                     <div
                       className={`size-8  ${
                         student1 && !student0
-                          ? "bg-amber-600 text-white"
+                          ? 'bg-amber-600 text-white'
                           : student0 && !student1
-                          ? "bg-teal-600 text-white"
-                          : "bg-slate-200 text-black"
+                            ? 'bg-teal-600 text-white'
+                            : 'bg-slate-200 text-black'
                       } rounded-md shadow-md p-2 flex justify-center items-center`}
                       data-toggle="buttons"
-                      style={{ marginLeft: "auto" }}
+                      style={{ marginLeft: 'auto' }}
                     >
                       {i * columns + j + 1}
                     </div>

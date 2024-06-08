@@ -1,4 +1,4 @@
-import logo from "../assets/images/antonine-logo.png";
+import logo from '../assets/images/antonine-logo.png';
 
 function Nav() {
   return (

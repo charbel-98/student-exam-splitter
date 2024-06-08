@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { EditIcon } from "../assets";
-import { Show } from "./Show";
-import { Room } from "../types";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Show } from './Show';
+import { EditIcon } from '../assets';
+import { Room } from '../types';
 
 interface RoomProps {
   roomName: string;
@@ -29,32 +29,34 @@ function RoomRow({
     if (editMode && rowRef.current) rowRef.current.focus();
   }, [editMode]);
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "row") {
+    if (e.target.name === 'row') {
       setNewRows(Number(e.target.value));
     }
-    if (e.target.name === "column") {
+    if (e.target.name === 'column') {
       setNewColumns(Number(e.target.value));
     }
   };
 
   //on input lose focus update the rooms
   const inputBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.name === "row") {
+    if (e.target.name === 'row') {
       //add or edit the field row of the room we are editing
       editRoom((prev) => {
         return prev.map((room) =>
-          room.roomName === roomName ? { ...room, rows: Number(newRows) } : room
+          room.roomName === roomName
+            ? { ...room, rows: Number(newRows) }
+            : room,
         ) as Room[];
       });
       rowRef.current = null;
     }
-    if (e.target.name === "column") {
+    if (e.target.name === 'column') {
       //add or edit the field column of the room we are editing
       editRoom((prev) => {
         return prev.map((room) =>
           room.roomName === roomName
             ? { ...room, columns: Number(newColumns) }
-            : room
+            : room,
         ) as Room[];
       });
       setEditMode(false);
@@ -69,7 +71,7 @@ function RoomRow({
       >
         <p className="text-lg font-semibold flex-1">{roomName}</p>
         <div className="flex gap-4 flex-3 justify-center items-center text-gray-500">
-          <p className="flex-4">Courses: {courseName || "none"}</p>
+          <p className="flex-4">Courses: {courseName || 'none'}</p>
 
           <p className="flex-2 flex gap-1">
             Rows:
@@ -79,14 +81,14 @@ function RoomRow({
                   ref={rowRef}
                   type="number"
                   className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
-                  value={newRows || ""}
+                  value={newRows || ''}
                   onChange={inputChangeHandler}
                   onBlur={inputBlurHandler}
                   name="row"
                 />
               </Show.When>
               <Show.Else>{rows}</Show.Else>
-            </Show>{" "}
+            </Show>{' '}
           </p>
           <p className="flex-2 flex gap-1">
             Columns:
@@ -97,7 +99,7 @@ function RoomRow({
                   //remove the arrows the input type number in className
 
                   className="max-w-[80px]  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none border-b-2 ps-2"
-                  value={newColumns || ""}
+                  value={newColumns || ''}
                   onChange={inputChangeHandler}
                   name="column"
                   onBlur={inputBlurHandler}

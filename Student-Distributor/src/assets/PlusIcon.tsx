@@ -1,23 +1,23 @@
-import { useAnimation, motion } from "framer-motion";
+import { useAnimation, motion } from 'framer-motion';
 
 function PlusIcon({ openHandler }: { openHandler: () => void }) {
   const variants = {
     initial: {
       scale: 1,
-      fill: "#000000",
+      fill: '#000000',
     },
     hover: {
       scale: [1.1],
-      fill: "#008000",
+      fill: '#008000',
     },
   };
   const controls = useAnimation();
   function handleMouseEnterControls() {
-    controls.start("hover");
+    controls.start('hover');
   }
 
   function handleMouseLeaveControls() {
-    controls.start("initial");
+    controls.start('initial');
   }
   return (
     <motion.svg
