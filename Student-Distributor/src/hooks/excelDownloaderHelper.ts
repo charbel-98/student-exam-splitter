@@ -1,8 +1,6 @@
 import { ScheduleCourse, Student, StudentList } from '../types.ts';
 
 const universityName = 'University Antonine';
-const facultyName = 'Faculty of Engineering';
-const semester = 'Final S2 2023-2024';
 
 const defaultBorderStyle = {
   top: { style: 'thick' },
@@ -82,6 +80,8 @@ const getHeaderInfo = (exam: ScheduleCourse) => {
 };
 
 const createHeaderRows = (
+  faculty: string,
+  semester: string,
   courseCode: string,
   courseName: string,
   date: string,
@@ -103,7 +103,7 @@ const createHeaderRows = (
         { v: '', t: 's' },
         { v: '', t: 's' },
       ],
-      [createCell(facultyName, false, true)],
+      [createCell(`Faculty of ${faculty}`, false, true)],
       [createCell(semester, false, true)],
       [],
       [
@@ -140,7 +140,7 @@ const createHeaderRows = (
       { v: '', t: 's' },
       { v: '', t: 's' },
     ],
-    [createCell(facultyName, false, true)],
+    [createCell(`Faculty of ${faculty}`, false, true)],
     [createCell(semester, false, true)],
     [],
     [
@@ -221,8 +221,8 @@ const createStudentRows = (students: Student[], isRoom: boolean) => {
     ...students.map((student, index) => [
       createCell(String(index + 1), false, false, true),
       createCell(student.id, false, false, true),
-      createCell(student.firstName, false, false, true),
-      createCell(student.lastName, false, false, true),
+      createCell(student.firstName || '', false, false, true),
+      createCell(student.lastName || '', false, false, true),
       createCell(
         String(student?.place?.placeNumber || 'unplaced'),
         false,

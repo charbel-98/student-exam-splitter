@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as XLSX from 'xlsx-js-style';
 import {
   createCell,
@@ -20,6 +21,9 @@ export const useExcelDownloader = ({
   excelDataSchedule,
   rooms,
 }: ExcelDownloaderProps) => {
+  const [faculty, setFaculty] = useState<string>('');
+  const [semester, setSemester] = useState<string>('');
+
   const handleCourseDownload = () => {
     const wb = XLSX.utils.book_new();
     excelDataStudent.forEach((studentList) => {
@@ -31,6 +35,8 @@ export const useExcelDownloader = ({
       (splitStudentListByRoom(studentList) as StudentList[]).forEach((list) => {
         const roomName = `Room: ${list.students[0].place?.roomName || 'No Room'}`;
         const rows = createHeaderRows(
+          faculty,
+          semester,
           courseCode,
           courseName,
           date,
@@ -90,6 +96,8 @@ export const useExcelDownloader = ({
         const room = `Room: ${roomData.roomName}`;
 
         const rows = createHeaderRows(
+          faculty,
+          semester,
           course?.code || '',
           course?.courseName || '',
           date,
@@ -108,13 +116,21 @@ export const useExcelDownloader = ({
           const studentsInThisCourse = excelDataStudent.find(
             (studentList) => studentList.courseName === course,
           );
+          rows.push([
+            createCell('No.', true, true, true),
+            createCell('ID', true, true, true),
+            createCell('First Name', true, true, true),
+            createCell('Last Name', true, true, true),
+            createCell('Place', true, true, true),
+            createCell('Course', true, true, true),
+          ]);
           studentsInThisCourse?.students.forEach((student, i) => {
             if (student.place?.roomName === roomData.roomName) {
               rows.push([
                 createCell(String(++i), false, false, true),
                 createCell(student.id, false, false, true),
-                createCell(student.firstName, false, false, true),
-                createCell(student.lastName, false, false, true),
+                createCell(student.firstName || '', false, false, true),
+                createCell(student.lastName || '', false, false, true),
                 createCell(
                   String(student.place?.placeNumber),
                   false,
@@ -160,5 +176,5 @@ export const useExcelDownloader = ({
     XLSX.writeFile(wb, 'Rooms.xlsx');
   };
 
-  return { handleCourseDownload, handleRoomDownload };
+  return { handleCourseDownload, handleRoomDownload, setFaculty, setSemester };
 };

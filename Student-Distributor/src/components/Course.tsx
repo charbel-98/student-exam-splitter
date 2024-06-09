@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { createPortal } from 'react-dom';
 import RoomInput from './RoomInput';
 import { PlusIcon } from '../assets';
 import CloseIcon from '../assets/CloseIcon';
 import TrashIcon from '../assets/TrashIcon';
-import { CourseInputState, ExamsAtSameTime, Room } from '../types';
+import { CourseInputState, Room, ScheduleCourse } from '../types';
 
 interface CourseProps {
   courseName: string;
@@ -18,7 +18,7 @@ interface CourseProps {
   setOpenRoomInput: React.Dispatch<React.SetStateAction<CourseInputState[]>>;
   rooms: Room[] | [];
   time: string;
-  setCourse: React.Dispatch<React.SetStateAction<string>>;
+  setCourse: React.Dispatch<SetStateAction<ScheduleCourse[] | null>>;
 }
 function Course({
   courseName,
