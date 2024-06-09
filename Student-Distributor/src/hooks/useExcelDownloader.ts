@@ -80,7 +80,7 @@ export const useExcelDownloader = ({
         );
       });
     });
-    XLSX.writeFile(wb, 'Students.xlsx');
+    XLSX.writeFile(wb, 'Courses.xlsx');
   };
 
   const handleRoomDownload = () => {
@@ -142,17 +142,14 @@ export const useExcelDownloader = ({
             }
           });
         });
-        rows.push(...createExcelFooter());
-
-        // Merge cells for university name, faculty, semester, date, program, and room
+        // rows.push(...createExcelFooter());
         const merges = [
           { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Merge university name
           { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // Merge faculty
           { s: { r: 2, c: 0 }, e: { r: 2, c: 4 } }, // Merge semester
-          { s: { r: 4, c: 0 }, e: { r: 4, c: 2 } }, // Merge date
-          { s: { r: 5, c: 0 }, e: { r: 5, c: 3 } }, // Merge program
           { s: { r: 6, c: 0 }, e: { r: 6, c: 1 } }, // Merge room
           { s: { r: 6, c: 2 }, e: { r: 6, c: 3 } }, // Merge room
+          { s: { r: 6, c: 4 }, e: { r: 6, c: 5 } }, // Merge room
         ];
 
         const colWidths = [
