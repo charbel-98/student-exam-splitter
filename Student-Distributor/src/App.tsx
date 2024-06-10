@@ -46,11 +46,8 @@ function App() {
         <h1 className="font-roboto text-4xl mt-12">Exam Scheduler</h1>
       </div>
       <div className={'flex gap-2'}>
-        <InfoInput changeHandler={setFaculty} label="Input Faculty"></InfoInput>
-        <InfoInput
-          changeHandler={setSemester}
-          label="Input Semester"
-        ></InfoInput>
+        <InfoInput changeHandler={setFaculty} label="Faculty"></InfoInput>
+        <InfoInput changeHandler={setSemester} label="Semester"></InfoInput>
       </div>
 
       <div className="flex justify-around mt-12">
