@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom';
 import RoomInput from './RoomInput';
 import { PlusIcon } from '../assets';
 import CloseIcon from '../assets/CloseIcon';
-import TrashIcon from '../assets/TrashIcon';
 import { CourseInputState, Room, ScheduleCourse } from '../types';
 
 interface CourseProps {
@@ -42,7 +41,7 @@ function Course({
         <p className="flex-4">Date: {date}</p>
         <p className="flex-1">Duration: {duration}</p>
         <p className="flex-1">Session: {session}</p>
-        <p className="flex-1">Students: {students}</p>
+        <p className="flex-2">Students: {students}</p>
         <div className="flex flex-2 max-w-52 flex-wrap font-roboto text-md text-black  gap-2">
           {rooms.map(
             (room, index) =>
@@ -75,7 +74,7 @@ function Course({
             });
           }}
         />
-        <TrashIcon />
+        {/*<TrashIcon />*/}
       </div>
 
       {openRoomInput.openForm && (

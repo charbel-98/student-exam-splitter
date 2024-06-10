@@ -45,12 +45,9 @@ function App() {
       <div className="flex justify-center">
         <h1 className="font-roboto text-4xl mt-12">Exam Scheduler</h1>
       </div>
-      <div className={'flex gap-2'}>
-        <InfoInput changeHandler={setFaculty} label="Input Faculty"></InfoInput>
-        <InfoInput
-          changeHandler={setSemester}
-          label="Input Semester"
-        ></InfoInput>
+      <div className="flex gap-2">
+        <InfoInput changeHandler={setFaculty} label="Faculty"></InfoInput>
+        <InfoInput changeHandler={setSemester} label="Semester"></InfoInput>
       </div>
 
       <div className="flex justify-around mt-12">
@@ -152,7 +149,7 @@ function App() {
               </RoomRow>
             ))}
           </ul>
-          <div className={'flex justify-center w-100 '}>
+          <div className="flex justify-center">
             <button
               onClick={splitStudents}
               className="bg-secondary w-1/4 text-white p-2 rounded-lg"

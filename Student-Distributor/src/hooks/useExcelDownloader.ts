@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as XLSX from 'xlsx-js-style';
 import {
   createCell,
-  createExcelFooter,
   createHeaderRows,
   createStudentRows,
   getHeaderInfo,
@@ -111,19 +110,19 @@ export const useExcelDownloader = ({
           .join('-');
 
         const wsName = `${roomData.roomName} ${examDate} ${exam.time.split(':').join('-')}`;
-
+        rows.push([
+          createCell('No.', true, true, true),
+          createCell('ID', true, true, true),
+          createCell('First Name', true, true, true),
+          createCell('Last Name', true, true, true),
+          createCell('Place', true, true, true),
+          createCell('Course', true, true, true),
+        ]);
         exam.courseNames.forEach((course) => {
           const studentsInThisCourse = excelDataStudent.find(
             (studentList) => studentList.courseName === course,
           );
-          rows.push([
-            createCell('No.', true, true, true),
-            createCell('ID', true, true, true),
-            createCell('First Name', true, true, true),
-            createCell('Last Name', true, true, true),
-            createCell('Place', true, true, true),
-            createCell('Course', true, true, true),
-          ]);
+
           studentsInThisCourse?.students.forEach((student, i) => {
             if (student.place?.roomName === roomData.roomName) {
               rows.push([

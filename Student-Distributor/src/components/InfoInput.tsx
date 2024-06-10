@@ -8,7 +8,7 @@ function InfoInput({
   changeHandler: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <div className="flex p-4 mt-12">
+    <div className="flex flex-col gap-1 w-1/2 p-4 mt-12">
       <label
         className="font-roboto flex align-center gap-3 text-lg"
         htmlFor="schedule"

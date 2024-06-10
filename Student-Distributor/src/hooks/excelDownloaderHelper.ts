@@ -1,6 +1,6 @@
 import { ScheduleCourse, Student, StudentList } from '../types.ts';
 
-const universityName = 'University Antonine';
+const universityName = 'Antonine University';
 
 const defaultBorderStyle = {
   top: { style: 'thick' },
