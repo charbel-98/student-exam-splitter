@@ -127,7 +127,7 @@ function App() {
                 editRoom={setRooms}
                 hideModel={() => setShowRoomModel(!showRoomModel)}
               >
-                <div className="flex gap-5">
+                <div className="flex gap-5 flex-wrap">
                   <AnimatePresence>
                     {room.exams?.map((exam, index) => {
                       return (
@@ -152,7 +152,7 @@ function App() {
           <div className={'flex justify-center w-100 '}>
             <button
               onClick={splitStudents}
-              className="bg-secondary w-1/4 text-white p-2 rounded-lg"
+              className="bg-primary w-1/4 text-white p-2 rounded-lg"
             >
               Place Students
             </button>

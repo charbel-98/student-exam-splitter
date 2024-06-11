@@ -52,8 +52,8 @@ function RoomModel({
           exit={'exit'}
           className="flex"
         >
-          <div className="flex flex-col gap-3 border p-4">
-            <div className="flex flex-col gap-2 justify-center items-center">
+          <div className="flex flex-col gap-3 border p-4 justify-between">
+            <div className="flex flex-col gap-2 justify-center items-center flex-1">
               <p className="font-roboto  font-semibold">
                 {exam.courseNames[0]}
               </p>
@@ -67,7 +67,7 @@ function RoomModel({
               <p>{exam.date}</p>
             </div>
             {Array.from({ length: rows }).map((_, i) => (
-              <div key={i} className="flex gap-4">
+              <div key={i} className="flex gap-4 self-end">
                 {Array.from({ length: columns }).map((_, j) => {
                   const student0 =
                     students[0]?.students?.find(
